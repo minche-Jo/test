@@ -1,8 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
-    // Check for POST request
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -13,9 +11,23 @@ exports.handler = async (event) => {
     // Parse the request body
     const { page, title, publish, year } = JSON.parse(event.body);
 
-    // Load the HTML file
-    const filePath = path.join(__dirname, '../../src/boardpublication.html');
-    let htmlContent = fs.readFileSync(filePath, 'utf8');
+    // GitHub API parameters
+    const owner = 'minche-Jo';
+    const repo = 'test';
+    const path = 'src/boardpublication.html';
+    const branch = 'master'; // or the branch you want to update
+    const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수를 통해 토큰을 불러옴
+
+    // Get the current content of the file
+    const fileResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
+        headers: {
+            'Authorization': `token ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+        },
+    });
+
+    const fileData = await fileResponse.json();
+    const content = Buffer.from(fileData.content, 'base64').toString('utf8');
 
     // Generate the new HTML block to insert
     const newBlock = `
@@ -36,14 +48,38 @@ exports.handler = async (event) => {
 
     // Insert the new block after <!--list 시작-->
     const marker = '<!--list 시작-->';
-    const insertPosition = htmlContent.indexOf(marker) + marker.length;
-    htmlContent = htmlContent.slice(0, insertPosition) + newBlock + htmlContent.slice(insertPosition);
+    const insertPosition = content.indexOf(marker) + marker.length;
+    const newContent = content.slice(0, insertPosition) + newBlock + content.slice(insertPosition);
 
-    // Save the updated HTML file
-    fs.writeFileSync(filePath, htmlContent, 'utf8');
+    // Encode the new content in base64
+    const encodedContent = Buffer.from(newContent, 'utf8').toString('base64');
 
-    return {
-        statusCode: 200,
-        body: 'Publication updated successfully!',
-    };
+    // Update the file on GitHub
+    const updateResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `token ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            message: `Update ${path} with new publication`,
+            content: encodedContent,
+            sha: fileData.sha,
+            branch: branch,
+        }),
+    });
+
+    if (updateResponse.ok) {
+        return {
+            statusCode: 200,
+            body: 'Publication updated successfully!',
+        };
+    } else {
+        const errorData = await updateResponse.json();
+        return {
+            statusCode: 500,
+            body: `Failed to update publication: ${errorData.message}`,
+        };
+    }
 };
