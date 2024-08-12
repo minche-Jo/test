@@ -4,24 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="admin.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="admin-container">
-        <h1>Admin Panel</h1>
-        <p id="admin-status">You are not logged in.</p>
-        <button id="loginButton">Login</button>
-        <button id="logoutButton" style="display:none;">Logout</button>
 
-        <div id="admin-actions" style="display:none;">
-            <!-- 관리 작업을 위한 UI 요소 -->
-            <button id="actionButton">Perform Admin Action</button>
-        </div>
+    <h1>Admin Panel</h1>
+    
+    <div class="input-group">
+        <label for="page">Page Number</label>
+        <input type="text" id="page" placeholder="Enter page number (e.g., 101)">
     </div>
 
-    <!-- Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script src="admin.js"></script>
+    <div class="input-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Enter title">
+    </div>
+
+    <div class="input-group">
+        <label for="publish">Publish Status</label>
+        <input type="text" id="publish" placeholder="Enter publish status">
+    </div>
+
+    <div class="input-group">
+        <label for="year">Year</label>
+        <input type="text" id="year" placeholder="Enter year">
+    </div>
+
+    <button id="updateButton">Update Page Content</button>
+
+    <script>
+        document.getElementById('updateButton').addEventListener('click', function() {
+            // Get input values
+            const page = document.getElementById('page').value;
+            const title = document.getElementById('title').value;
+            const publish = document.getElementById('publish').value;
+            const year = document.getElementById('year').value;
+
+            // Send data to Netlify Function
+            fetch('/.netlify/functions/updatePublication', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ page, title, publish, year }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
 </body>
 </html>
-g
