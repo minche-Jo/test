@@ -26,6 +26,14 @@ exports.handler = async (event) => {
         },
     });
 
+    if (!fileResponse.ok) {
+        const errorData = await fileResponse.json();
+        return {
+            statusCode: fileResponse.status,
+            body: `Failed to fetch file: ${errorData.message}`,
+        };
+    }
+
     const fileData = await fileResponse.json();
     const content = Buffer.from(fileData.content, 'base64').toString('utf8');
 
@@ -46,7 +54,7 @@ exports.handler = async (event) => {
     </td>
 </tr>`;
 
-    // Insert the new block after <!--list 시작-->
+    // Insert the new block right after <!--list 시작-->
     const marker = '<!--list 시작-->';
     const insertPosition = content.indexOf(marker) + marker.length;
     const newContent = content.slice(0, insertPosition) + newBlock + content.slice(insertPosition);
@@ -65,7 +73,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({
             message: `Update ${path} with new publication`,
             content: encodedContent,
-            sha: fileData.sha,  // 기존 파일의 sha 사용
+            sha: fileData.sha,
             branch: branch,
         }),
     });
