@@ -12,11 +12,11 @@ exports.handler = async (event) => {
     const { page, title, publish, year } = JSON.parse(event.body);
 
     // GitHub API parameters
-    const owner = 'minche-Jo';
-    const repo = 'test';
-    const path = 'src/boardpublication.html';
-    const branch = 'master'; // or the branch you want to update
-    const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수를 통해 토큰을 불러옴
+    const owner = 'your-github-username';  // GitHub 사용자 이름
+    const repo = 'your-repo-name';  // 리포지토리 이름
+    const path = 'src/boardpublication.html';  // 파일 경로
+    const branch = 'main';  // 브랜치 이름
+    const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수로부터 토큰 불러오기
 
     // Get the current content of the file
     const fileResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
@@ -65,10 +65,14 @@ exports.handler = async (event) => {
         body: JSON.stringify({
             message: `Update ${path} with new publication`,
             content: encodedContent,
-            sha: fileData.sha,
+            sha: fileData.sha,  // 기존 파일의 sha 사용
             branch: branch,
         }),
     });
+
+    // 디버깅을 위한 추가 코드
+    console.log('Update Response Status:', updateResponse.status);  // 응답 상태 코드 출력
+    console.log('Update Response:', await updateResponse.json());  // 응답 데이터 출력
 
     if (updateResponse.ok) {
         return {
