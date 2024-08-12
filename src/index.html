@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netlify Functions Example</title>
+</head>
+<body>
+    <h1>Netlify Functions Example</h1>
+    <button id="fetchDataButton">Fetch Data from Function</button>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('fetchDataButton').addEventListener('click', function() {
+            fetch('/.netlify/functions/hello')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = data.message;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
