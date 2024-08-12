@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netlify Functions Example</title>
+    <title>Netlify Identity Example</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Netlify Functions Example</h1>
-    <button id="fetchDataButton">Fetch Data from Function</button>
-    <p id="result"></p>
+    <div class="container">
+        <h1>Netlify Identity Example</h1>
+        <button id="loginButton">Login</button>
+        <button id="logoutButton" style="display:none;">Logout</button>
+        <p id="status"></p>
+    </div>
 
-    <script>
-        document.getElementById('fetchDataButton').addEventListener('click', function() {
-            fetch('/.netlify/functions/hello')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').textContent = data.message;
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <script src="javascript.js"></script>
 </body>
 </html>
