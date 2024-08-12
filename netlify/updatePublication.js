@@ -78,9 +78,7 @@ exports.handler = async (event) => {
         }),
     });
 
-    // 디버깅을 위한 추가 코드
-    console.log('Update Response Status:', updateResponse.status);  // 응답 상태 코드 출력
-    console.log('Update Response:', await updateResponse.json());  // 응답 데이터 출력
+    const updateResponseBody = await updateResponse.json();  // 중복된 json 호출 제거
 
     if (updateResponse.ok) {
         return {
@@ -88,10 +86,9 @@ exports.handler = async (event) => {
             body: 'Publication updated successfully!',
         };
     } else {
-        const errorData = await updateResponse.json();
         return {
             statusCode: 500,
-            body: `Failed to update publication: ${errorData.message}`,
+            body: `Failed to update publication: ${updateResponseBody.message}`,
         };
     }
 };
