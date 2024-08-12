@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Admin Panel</h1>
+        <p id="admin-status">You are not logged in.</p>
+        <button id="loginButton">Login</button>
+        <button id="logoutButton" style="display:none;">Logout</button>
+
+        <div id="admin-actions" style="display:none;">
+            <!-- 관리 작업을 위한 UI 요소 -->
+            <button id="actionButton">Perform Admin Action</button>
+        </div>
+    </div>
+
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
