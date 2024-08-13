@@ -7,14 +7,14 @@ exports.handler = async (event) => {
             body: 'Method Not Allowed',
         };
     }
-
+    
     // Parse the request body
     const { page, title, publish, year } = JSON.parse(event.body);
 
     // GitHub API parameters
     const owner = 'minche-Jo';  // GitHub 사용자 이름
     const repo = 'test';  // 리포지토리 이름
-    const path = 'src/boardpublication.html';  // 파일 경로
+    const path = '../src/boardpublication.html';  // 파일 경로
     const branch = 'master';  // 브랜치 이름
     const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수로부터 토큰 불러오기
 
