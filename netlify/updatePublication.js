@@ -12,10 +12,10 @@ exports.handler = async (event) => {
     const { page, title, publish, year } = JSON.parse(event.body);
 
     // GitHub API parameters
-    const owner = 'your-github-username';  // GitHub 사용자 이름
-    const repo = 'your-repo-name';  // 리포지토리 이름
+    const owner = 'minche-Jo';  // GitHub 사용자 이름
+    const repo = 'test';  // 리포지토리 이름
     const path = 'src/boardpublication.html';  // 파일 경로
-    const branch = 'main';  // 브랜치 이름
+    const branch = 'master';  // 브랜치 이름
     const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수로부터 토큰 불러오기
 
     // Get the current content of the file
