@@ -1,3 +1,7 @@
 [build]
   functions = "netlify/functions"
   publish = "src" 
+[[redirects]]
+  from = "/admin"
+  to = "/.netlify/functions/validateAccess"
+  status = 200

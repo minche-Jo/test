@@ -60,7 +60,15 @@
     </div>
 
     <button id="updateButton">Update Page Content</button>
-
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginButton">Login</button>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <div id="admin-status"></div>
+    <div id="admin-actions" style="display:none;">
+      <!-- Admin actions here -->
+    </div>
+    
     <script>
         document.getElementById('updateButton').addEventListener('click', function() {
             // Get input values
