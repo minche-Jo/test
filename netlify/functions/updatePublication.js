@@ -14,7 +14,7 @@ exports.handler = async (event) => {
     // GitHub API 관련 설정
     const owner = 'minche-Jo';  // GitHub 사용자 이름
     const repo = 'test';  // 리포지토리 이름
-    const path = 'src/boardpublication.html';  // 파일 경로 (상대 경로에서 수정)
+    const path = '../../src/boardpublication.html';  // 파일 경로 (상대 경로에서 수정)
     const branch = 'master';  // 브랜치 이름
     const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수에서 토큰 가져오기
 
