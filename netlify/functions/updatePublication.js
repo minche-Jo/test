@@ -1,20 +1,20 @@
-const fetch = require('node-fetch');
-
 exports.handler = async (event) => {
+    const fetch = (await import('node-fetch')).default;
+
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
             body: 'Method Not Allowed',
         };
     }
-    
+
     // 요청 본문에서 데이터 파싱
     const { page, title, publish, year } = JSON.parse(event.body);
 
     // GitHub API 관련 설정
     const owner = 'minche-Jo';  // GitHub 사용자 이름
     const repo = 'test';  // 리포지토리 이름
-    const path = '../../src/boardpublication.html';  // 파일 경로 (상대 경로에서 수정)
+    const path = 'src/boardpublication.html';  // 파일 경로 (상대 경로에서 수정)
     const branch = 'master';  // 브랜치 이름
     const token = process.env.GITHUB_TOKEN;  // Netlify 환경 변수에서 토큰 가져오기
 
